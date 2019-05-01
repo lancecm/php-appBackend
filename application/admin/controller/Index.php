@@ -7,9 +7,11 @@ class Index extends Controller
 {
     public function index() {
         return $this->fetch();
+//        return phpinfo();
     }
 
+
     public function welcome() {
-        return "hello, api-admin";
+        return "hi.";
     }
 }
