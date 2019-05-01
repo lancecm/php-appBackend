@@ -9,6 +9,15 @@ class Login extends Controller
     public function index() {
         return $this->fetch();
     }
+    /**
+     * logout admin system
+     */
+    public function logout() {
+        // 1. clear session
+        session(null, config('admin.session_user_scope'));
+        // 2. redirect to login page
+        $this->redirect('login/index');
+    }
 
     /**
      * 登录业务
