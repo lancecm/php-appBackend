@@ -4,10 +4,19 @@ namespace app\admin\controller;
 use think\Controller;
 use app\common\lib\IAuth;
 
-class Login extends Controller
+class Login extends Base
 {
+    // override Base _initialize to avoid loop redirecting
+    public function _initialize(){
+
+    }
+
     public function index() {
-        return $this->fetch();
+        $isLogin = $this->isLogin();
+        if ($isLogin) {
+            return $this->redirect('index/index');
+        }
+        else return $this->fetch();
     }
     /**
      * logout admin system

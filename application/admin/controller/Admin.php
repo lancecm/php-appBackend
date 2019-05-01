@@ -4,7 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Exception;
 
-class Admin extends Controller
+class Admin extends Base
 {
     public function add() {
         if (request() -> isPost()) {
