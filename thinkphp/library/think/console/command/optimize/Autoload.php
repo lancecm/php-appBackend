@@ -183,7 +183,7 @@ EOF;
             } else {
                 throw new \RuntimeException(
                     'Could not scan for classes inside "' . $path .
-                    '" which does not appear to be a file nor a folder'
+                    '" which does not appear to be a file nor a admin'
                 );
             }
         }

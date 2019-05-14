@@ -25,7 +25,8 @@ class Base extends Controller
      */
     public function isLogin() {
         // retrieve session
-        $user = session(config('admin.session_user'), '', config('admin.session_user_scope'));
+        $user = session(config('admin.session_user'), '',
+            config('admin.session_user_scope'));
         if ($user && $user->id) {
             return true;
         }
