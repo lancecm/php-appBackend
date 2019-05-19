@@ -54,7 +54,6 @@
     </table>
     <div id="laypage"></div>
   </div>
-  {:pagination($news)}
 </div>
 <!--header-->
 {include file="public/_footer" /}
@@ -63,6 +62,19 @@
 <script type="text/javascript" src="__STATIC__/hadmin/static/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="__STATIC__/hadmin/static/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+  var url = '{:url("news/index")}';
+  //分页
+  laypage({
+    cont: 'laypage',
+    pages: '{$pageTotal}',
+    skin: '#5FB878',
+    curr: '{$curr}',
+    jump: function (e, first) {
+      if(!first) {
+        location.href = url + '?page=' + e.curr; // curr 当前页
+      }
+    }
+  })
 </script>
 <style>
   .imooc-app .pagination li{display:inline; padding-left:10px;}

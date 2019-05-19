@@ -10,6 +10,14 @@ use think\Controller;
  */
 class Base extends Controller
 {
+
+    /**
+     * @var string
+     * 分页所需
+     */
+    public $page = '';
+    public $size = '';
+
     /**
      * _initialize: if extend Base, must execute this function first
      */
@@ -31,6 +39,15 @@ class Base extends Controller
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取分页page, sie
+     */
+    public function getPageAndSize($param) {
+        $this->page = !empty($param['page']) ? $param['page'] : 1;
+        $this->size = !empty($param['size']) ? $param['size'] :
+            config('paginate.list_rows');
     }
 }
 

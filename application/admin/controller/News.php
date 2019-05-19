@@ -6,9 +6,26 @@ use think\Controller;
 class News extends Base
 {
     public function index() {
-        $news = model('News')->getNews();
+        // 方法一： 使用ThinkPHP 内置分页机制
+//        $news = model('News')->getNews();
+//        注意，模板需要加上 {:pagination($news)}  展示样式
+
+        // 方法二： 原生PHP + 插件
+        // page, size, from -> limit from size
+
+        $param = input('param.');
+        $this->getPageAndSize($param);
+        $where['page'] = $this->page;
+        $where['size'] = $this->size;
+
+        $news = model('News')->getNewsByCondition($where);
+        // 获取满足条件的数据总数 =》计算总页数
+        $total = model('News')->getNewsCountByCondition($where);
+        $pageNum = ceil($total / $where['size']);
         return $this->fetch('', [
             'news' => $news,
+            'pageTotal' => $pageNum,
+            'curr' => $where['page']
         ]);
     }
 
