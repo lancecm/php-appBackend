@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="row cl">
-      <label class="form-label col-xs-4 col-sm-2">简略标题：</label>
+      <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>简略标题：</label>
       <div class="formControls col-xs-8 col-sm-9">
         <input type="text" class="input-text" value="" placeholder="" id="samll_title" name="small_title">
       </div>
@@ -22,9 +22,9 @@
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
       <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="catid" class="select">
-
-                  <option value=""></option>
-
+                {volist name="column" id="vo"}
+                  <option value="{$key}">{$vo}</option>
+                {/volist}
                 </select>
 				</span> </div>
     </div>
@@ -39,10 +39,10 @@
 
 
     <div class="row cl">
-      <label class="form-label col-xs-4 col-sm-2">允许评论：</label>
+      <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许评论：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_allowcomments" name="is_allowcomments" value="">
+          <input type="checkbox" id="is_allowcomments" name="is_allowcomments" value="0">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -51,7 +51,7 @@
       <label class="form-label col-xs-4 col-sm-2">是否推荐到首页头图：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_head_figure" name="is_head_figure" value="">
+          <input type="checkbox" id="is_head_figure" name="is_head_figure" value="0">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -60,7 +60,7 @@
       <label class="form-label col-xs-4 col-sm-2">是否推荐：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_position" name="is_position" value="">
+          <input type="checkbox" id="is_position" name="is_position" value="0">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -71,7 +71,8 @@
       <div class="formControls col-xs-8 col-sm-9">
           <input id="fileupload" type="file" name="file"  multiple style="color:transparent;">
           <div id="files"> </div>
-          <img id="img" class="upload-img" src="" alt="" value=""/>
+          <img id="img" class="upload-img" src="" alt="" />
+          <input id="file_upload_image" name="image" type="hidden" value=""/>
         </img>
       </div>
     </div>
@@ -123,10 +124,8 @@
       },
       done: function (e, data) {
         data.context.text(data.files[0].name + '    uploaded.');
-        // console.log(data.result);
-        // console.log(data.files);
         $('#img').attr('src', data.result.url);
-        $('#img').attr('value', data.result.url);
+        $('#file_upload_image').attr('value', data.result.url);
       }
     });
     $('.skin-minimal input').iCheck({
@@ -159,7 +158,7 @@
       focusCleanup:true,
       success:"valid",
       submitHandler:function(form){
-        singwaapp_save(form);// 需要小伙伴自定义一个singwaapp_save方法 用来处理抛送请求的哦
+        save(form);
       }
     });
 
