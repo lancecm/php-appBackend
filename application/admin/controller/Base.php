@@ -65,6 +65,8 @@ class Base extends Controller
         if (!intval($id)) {
             $this->result('',0, 'ID 不合法');
         } else {
+            // 通过id去数据库中查询记录是否存在 略
+
             // 获取当前控制器名字
             // 对于model层和控制器名称不一样的情况，用成员变量保存对应的model层
             $model = $this->model ? $this->model : request() -> controller();
@@ -82,5 +84,30 @@ class Base extends Controller
             }
         }
     }
+
+    /**
+     * 状态转换
+     */
+    public function status() {
+        $param = input('param.');
+        // 数据校验 略
+        $model = $this->model ? $this->model : request() -> controller();
+        // 通过id去数据库中查询记录是否存在
+        if (!model($model)->get($param['id'])) {
+            $this->result('', 0, '记录不存在');
+        }
+        try {
+            $res = model($model) -> save(['status'=>$param['status']], ['id' => $param['id']]);
+        } catch (\Exception $e) {
+            $this->result('', 0, $e->getMessage());
+        }
+        if ($res) {
+            $this->result(['jump_url' => $_SERVER['HTTP_REFERER']], 1, '修改成功');
+        }
+        else {
+            $this->result('', 0, '修改失败');
+        }
+    }
+
 }
 

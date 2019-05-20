@@ -44,3 +44,22 @@ function getCapName($id) {
 function isYes($val) {
     return $val ? '<span style="color: red">是</span>': '<span>否</span>';
 }
+
+/**
+ * @param $id
+ * @param $status
+ * @return string
+ * 状态转换
+ */
+function status($id, $status) {
+    $controller = request()->controller();
+    $sta = $status == 1 ? 0 : 1;
+    // 新url
+    $url = url($controller.'/status', ['status'=>$sta, 'id'=> $id]);
+    if ($status == 1) {
+        $str = "<a href = 'javascript:;' title='修改状态' onclick='change_status(this)' status_url='".$url."'><span class='label label-success'>正常</span></a>";
+    } elseif ($status == 0) {
+        $str = "<a href = 'javascript:;' title='修改状态' onclick='change_status(this)' status_url='".$url."'><span class='label label-danger'>待审</span></a>";
+    }
+    return $str;
+}

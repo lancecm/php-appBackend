@@ -74,3 +74,31 @@ function app_del(obj) {
         })
     })
 }
+
+/**
+ * 改变状态
+ * @param obj
+ */
+function change_status(obj) {
+    // 获取模板中的url地址
+    var url = $(obj).attr('status_url');
+    // alert(url);
+    layer.confirm('改变状态?', function(index) {
+        $.ajax({
+            type: 'post',
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+                if (data.code == 1) {
+                    // 执行跳转
+                    self.location = data.data['jump_url'];
+                } else if (data.code == 0) {
+                    layer.msg(data.msg, {icon: 2, time: 2000});
+                }
+            },
+            error: function(data) {
+                console.log(data.msg);
+            },
+        })
+    })
+}
