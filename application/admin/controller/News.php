@@ -2,9 +2,16 @@
 namespace app\admin\controller;
 
 use think\Controller;
+use think\Request;
 
 class News extends Base
 {
+    public function __construct(Request $request = null)
+    {
+        $this->model = ("News");
+        parent::__construct($request);
+    }
+
     public function index() {
         // 方法一： 使用ThinkPHP 内置分页机制
 //        $news = model('News')->getNews();
@@ -54,6 +61,10 @@ class News extends Base
         return $result;
     }
 
+    /**
+     * @return mixed|void
+     * 新增内容管理
+     */
     public function add() {
         if (request()->isPost()) {
             $data = input('post.');
@@ -62,13 +73,13 @@ class News extends Base
             try {
                $id = model('News')->add($data);
             } catch (\Exception $e) {
-                return $this->result('',0,$e->getMessage());
+                $this->result('',0,$e->getMessage());
             }
             if ($id) {
-                return $this->result(['jump_url' => url('news/index')],
+                $this->result(['jump_url' => url('news/index')],
                     1, '新增成功');
             } else {
-                return $this->result('',0,'新增失败');
+                $this->result('',0,'新增失败');
             }
 
         } else {

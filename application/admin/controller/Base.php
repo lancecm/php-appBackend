@@ -20,12 +20,18 @@ class Base extends Controller
     public $from = '';
 
     /**
+     * @var string
+     * 对应model层
+     */
+    public $model = '';
+
+    /**
      * _initialize: if extend Base, must execute this function first
      */
     public function _initialize() {
         $isLogin = $this->isLogin();
         if (!$isLogin) {
-            return $this->redirect('login/index');
+            $this->redirect('login/index');
         }
     }
 
@@ -50,6 +56,31 @@ class Base extends Controller
         $this->size = !empty($param['size']) ? $param['size'] :
             config('paginate.list_rows');
         $this->from = ($this->page - 1) * $this->size;
+    }
+
+    /**
+     * 删除逻辑
+     */
+    public function delete($id) {
+        if (!intval($id)) {
+            $this->result('',0, 'ID 不合法');
+        } else {
+            // 获取当前控制器名字
+            // 对于model层和控制器名称不一样的情况，用成员变量保存对应的model层
+            $model = $this->model ? $this->model : request() -> controller();
+            // php7的写法  $model = $this->model ?? request() -> controller();
+            try {
+                $res = model($model) -> save(['status'=>-1], ['id' => $id]);
+            } catch (\Exception $e) {
+                $this->result('', 0, $e->getMessage());
+            }
+            if ($res) {
+                $this->result(['jump_url' => $_SERVER['HTTP_REFERER']], 1, '删除成功');
+            }
+            else {
+                $this->result('', 0, '删除失败');
+            }
+        }
     }
 }
 

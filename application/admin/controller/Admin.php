@@ -3,9 +3,23 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Exception;
+use think\Request;
 
 class Admin extends Base
 {
+
+    /**
+     * Admin constructor.
+     * @param Request|null $request
+     * 待测试
+     */
+    public function __construct(Request $request = null)
+    {
+        parent::__construct($request);
+        // 对应model的名称
+        $this->model = 'AdminUser';
+    }
+
     public function add() {
         if (request() -> isPost()) {
 //            dump(input('post.'));
