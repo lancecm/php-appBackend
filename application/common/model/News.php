@@ -22,16 +22,16 @@ class News extends Base {
      * @param array $param
      * 根据条件获取数据
      */
-    public function getNewsByCondition($param=[]) {
+    public function getNewsByCondition($condition=[], $from=0, $size=5) {
         $condition['status'] = [
             'neq', config('code.status_delete')
         ];
         $order = ['id' => 'desc'];
-        $from = ($param['page'] - 1) * $param['size'];
         $result = $this->where($condition)
-            ->limit($from, $param['size'])
+            ->limit($from, $size)
             ->order($order)
             ->select();
+//      echo $this->getLastSql();
         return $result;
     }
 
@@ -39,11 +39,10 @@ class News extends Base {
      * @param array $param
      * 根据条件获取列表总数
      */
-    public function getNewsCountByCondition($param=[]) {
+    public function getNewsCountByCondition($condition=[]) {
         $condition['status'] = [
             'neq', config('code.status_delete')
         ];
         return $this->where($condition)->count();
-//        echo $this->getLastSql();
     }
 }

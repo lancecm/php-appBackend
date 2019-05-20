@@ -15,13 +15,13 @@
     <div class="row cl">
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>简略标题：</label>
       <div class="formControls col-xs-8 col-sm-9">
-        <input type="text" class="input-text" value="" placeholder="" id="samll_title" name="small_title">
+        <input type="text" class="input-text" value="" placeholder="" id="title_short" name="title_short">
       </div>
     </div>
     <div class="row cl">
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
       <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select name="catid" class="select">
+				<select name="capid" class="select">
                 {volist name="column" id="vo"}
                   <option value="{$key}">{$vo}</option>
                 {/volist}
@@ -42,7 +42,7 @@
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许评论：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_allowcomments" name="is_allowcomments" value="0">
+          <input type="checkbox" id="is_allowcomments" name="is_allowcomments" value="1">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -51,7 +51,7 @@
       <label class="form-label col-xs-4 col-sm-2">是否推荐到首页头图：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_head_figure" name="is_head_figure" value="0">
+          <input type="checkbox" id="is_head_figure" name="is_head_figure" value="1">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -60,7 +60,7 @@
       <label class="form-label col-xs-4 col-sm-2">是否推荐：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_position" name="is_position" value="0">
+          <input type="checkbox" id="is_position" name="is_position" value="1">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -140,10 +140,10 @@
         title:{
           required:true,
         },
-        small_title:{
+        title_short:{
           required:true,
         },
-        catid:{
+        capid:{
           required:true,
         },
         sources_type:{

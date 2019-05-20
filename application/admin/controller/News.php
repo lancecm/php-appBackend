@@ -14,19 +14,44 @@ class News extends Base
         // page, size, from -> limit from size
 
         $param = input('param.');
-        $this->getPageAndSize($param);
-        $where['page'] = $this->page;
-        $where['size'] = $this->size;
+        $query = http_build_query($param);
+        $where = [];
+        // 转换查询条件
+        if (!empty($param['start_time'])
+            && !empty($param['end_time'])
+            && $param['start_time'] <= $param['end_time']
+        ) {
+            $where['create_time'] = [
+                ['gt', strtotime($param['start_time'])],
+                ['lt', strtotime($param['end_time'])],
+            ];
+        }
+        if (!empty($param['capid'])) {
+            $where['capid'] = intval($param['capid']);
+        }
+        if (!empty($param['title'])) {
+            $where['title'] = ['like', '%'.$param['title'].'%'];
+        }
 
-        $news = model('News')->getNewsByCondition($where);
+        $this->getPageAndSize($param);
+
+        $news = model('News')->getNewsByCondition($where, $this->from, $this->size);
         // 获取满足条件的数据总数 =》计算总页数
+
         $total = model('News')->getNewsCountByCondition($where);
-        $pageNum = ceil($total / $where['size']);
-        return $this->fetch('', [
+        $pageNum = ceil($total / $this->size);
+        $result = $this->fetch('', [
+            'column' => config('column.lists'),
             'news' => $news,
             'pageTotal' => $pageNum,
-            'curr' => $where['page']
+            'curr' => $this->page,
+            'capid' => empty($param['capid']) ? '' : $param['capid'],
+            'title' => empty($param['title']) ? '' : $param['title'],
+            'start_time' => empty($param['start_time']) ? '' : $param['start_time'],
+            'end_time' => empty($param['end_time']) ? '' : $param['end_time'],
+            'query' => $query
         ]);
+        return $result;
     }
 
     public function add() {

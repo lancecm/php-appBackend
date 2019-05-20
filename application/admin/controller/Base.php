@@ -17,6 +17,7 @@ class Base extends Controller
      */
     public $page = '';
     public $size = '';
+    public $from = '';
 
     /**
      * _initialize: if extend Base, must execute this function first
@@ -48,6 +49,7 @@ class Base extends Controller
         $this->page = !empty($param['page']) ? $param['page'] : 1;
         $this->size = !empty($param['size']) ? $param['size'] :
             config('paginate.list_rows');
+        $this->from = ($this->page - 1) * $this->size;
     }
 }
 

@@ -32,7 +32,7 @@ function pagination($obj) {
  * 获取栏目名称
  */
 function getCapName($id) {
-    if ($id) return '';
+    if (!$id) return '';
     $columns = config('column.lists');
     return !empty($columns[$id]) ? $columns[$id] : '';
 }
