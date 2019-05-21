@@ -5,17 +5,17 @@
 <!--引入CSS-->
 <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/upload.css" />
 <article class="page-container">
-  <form class="form form-horizontal" id="form-singwaapp" url="">
+  <form class="form form-horizontal" id="form-singwaapp" url="{:url('news/add')}">
     <div class="row cl">
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
       <div class="formControls col-xs-8 col-sm-9">
-        <input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+        <input type="text" class="input-text" value="{$title}" placeholder="" id="title" name="title">
       </div>
     </div>
     <div class="row cl">
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>简略标题：</label>
       <div class="formControls col-xs-8 col-sm-9">
-        <input type="text" class="input-text" value="" placeholder="" id="title_short" name="title_short">
+        <input type="text" class="input-text" value="{$title_short}" placeholder="" id="title_short" name="title_short">
       </div>
     </div>
     <div class="row cl">
@@ -23,7 +23,7 @@
       <div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="capid" class="select">
                 {volist name="column" id="vo"}
-                  <option value="{$key}">{$vo}</option>
+                  <option value="{$key}" {if condition="$key eq $capid"} selected="selected" {/if}>{$vo}</option>
                 {/volist}
                 </select>
 				</span> </div>
@@ -42,7 +42,7 @@
       <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许评论：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_allowcomments" name="is_allowcomments" value="1">
+          <input type="checkbox" onclick="changeBox(this)" id="is_allowcomments" name="is_allowcomments" value="{$is_allowcomments}">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -51,7 +51,7 @@
       <label class="form-label col-xs-4 col-sm-2">是否推荐到首页头图：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_head_figure" name="is_head_figure" value="1">
+          <input type="checkbox" onclick="changeBox(this)" id="is_head_figure" name="is_head_figure" value="{$is_head_figure}">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -60,7 +60,7 @@
       <label class="form-label col-xs-4 col-sm-2">是否推荐：</label>
       <div class="formControls col-xs-8 col-sm-9 skin-minimal">
         <div class="check-box">
-          <input type="checkbox" id="is_position" name="is_position" value="1">
+          <input type="checkbox" onclick="changeBox(this)" id="is_position" name="is_position" value="{$is_position}">
           <label for="checkbox-pinglun">&nbsp;</label>
         </div>
       </div>
@@ -71,8 +71,8 @@
       <div class="formControls col-xs-8 col-sm-9">
           <input id="fileupload" type="file" name="file"  multiple style="color:transparent;">
           <div id="files"> </div>
-          <img id="img" class="upload-img" src="" alt="" />
-          <input id="file_upload_image" name="image" type="hidden" value=""/>
+          <img id="img" class="upload-img" src="{$image}" alt="" />
+          <input id="file_upload_image" name="image" type="hidden" value="{$image}"/>
         </img>
       </div>
     </div>
@@ -106,6 +106,7 @@
 <script src="__STATIC__/uploader/js/jquery.fileupload.js"></script>
 <script type="text/javascript">
   $(function () {
+    // 图片上传
     $('#fileupload').fileupload({
       dataType: 'json',
       url: "{:url('image/upload')}",
@@ -128,11 +129,13 @@
         $('#file_upload_image').attr('value', data.result.url);
       }
     });
-    $('.skin-minimal input').iCheck({
-      checkboxClass: 'icheckbox-blue',
-      radioClass: 'iradio-blue',
-      increaseArea: '20%'
-    });
+
+    // 抛弃使用
+    // $('.skin-minimal input').iCheck({
+    //   checkboxClass: 'icheckbox-blue',
+    //   radioClass: 'iradio-blue',
+    //   increaseArea: '20%'
+    // });
 
     //表单验证
     $("#form-singwaapp").validate({
@@ -146,13 +149,6 @@
         capid:{
           required:true,
         },
-        sources_type:{
-          required:true,
-        },
-        is_allowcomments:{
-          required:true,
-        },
-
       },
       onkeyup:false,
       focusCleanup:true,
@@ -162,7 +158,24 @@
       }
     });
 
+    // 编辑器
     var ue = UE.getEditor('editor');
+
+    // checkbox根据value决定样式
+    const checkboxes = $('.check-box');
+    if (checkboxes != null) {
+      $.each(checkboxes, function(key, obj) {
+        const input = $(obj).find('input');
+        if (input != null) {
+          const val = $(input[0]).attr('value');
+          if (val != 0) {
+            console.log(val);
+            $(input).attr('checked', true);
+          }
+        }
+      })
+    }
+
   });
 </script>
 <!--/请在上方写此页面业务相关的脚本-->

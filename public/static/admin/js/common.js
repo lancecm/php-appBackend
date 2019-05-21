@@ -4,9 +4,7 @@
  */
 function save(form) {
     var data = $(form).serialize();
-    // alert(data);
     var url = $(form).attr('url'); // current url
-
     $.post(url, data, function(result){
         if (result.code == 0) {
             layer.msg(result.msg, {icon: 5, time:2000});
@@ -101,4 +99,17 @@ function change_status(obj) {
             },
         })
     })
+}
+
+/**
+ * 改变复选框状态
+ * @param obj
+ */
+function changeBox(obj) {
+    var curVal = $(obj).attr('value');
+    if (curVal === '0' ) {
+        $(obj).attr('value', '1');
+    } else {
+        $(obj).attr('value', '0');
+    }
 }

@@ -81,11 +81,48 @@ class News extends Base
             } else {
                 $this->result('',0,'新增失败');
             }
-
         } else {
             return $this->fetch('', [
-                'column' => config('column.lists')
+                'column' => config('column.lists'),
+                'title' => '',
+                'title_short' => '',
+                'capid' => '1',
+                'description' => '',
+                'is_position' => '0',
+                'is_allowcomments' => '0',
+                'is_head_figure' => '0',
+                'image' => '',
+                'content' => ''
             ]);
+        }
+    }
+
+    /**
+     * 编辑内容
+     */
+    public function edit() {
+        $param = input('param.');
+        $model = $this->model ? $this->model : request()->controller();
+        try {
+            $res = model($model)->get(['id' => $param['id']]);
+        } catch (\Exception $e) {
+            $this->result('', 0, $e->getMessage());
+        }
+        if ($res) {
+            return $this->fetch('add', [
+                'column' => config('column.lists'),
+                'title' => $res['title'],
+                'title_short' => $res['title_short'],
+                'capid' => $res['capid'],
+                'description' => $res['description'],
+                'is_position' => $res['is_position'],
+                'is_allowcomments' => $res['is_allowcomments'],
+                'is_head_figure' => $res['is_head_figure'],
+                'image' => $res['image'],
+                'content' => $res['content']
+            ]);
+        } else {
+            $this->result('', 0, '编辑失败');
         }
     }
 }
