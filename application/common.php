@@ -65,3 +65,20 @@ function status($id, $status) {
     }
     return $str;
 }
+
+/**
+ * @param $status
+ * @param $message
+ * @param $data
+ * @param $httpCode
+ * @return array
+ * 通用化API接口数据输出
+ */
+function show($status, $message, $data, $httpCode) {
+    $data = [
+        'status' => $status,
+        'message' => $message,
+        'data' => $data,
+    ];
+    return json($data, $httpCode);
+}
