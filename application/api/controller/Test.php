@@ -3,8 +3,9 @@ namespace app\api\controller;
 use think\Controller;
 use app\common\lib\exception\ApiException;
 
-class Test extends Controller {
+class Test extends Common {
     public function index() {
+        halt(phpinfo());
         return [
             'sdf',
             'sdfae'
@@ -20,9 +21,11 @@ class Test extends Controller {
 //        return input('post.');
         // 获取提交数据插入库
         // 获取客户端APP =》 接口数据
-        if ($data['ids']) {
-            throw new ApiException('不合法',[], 400);
-        }
+
+        // 测试异常
+//        if ($data['ids']) {
+//            throw new ApiException('不合法',[], 400);
+//        }
         return show(1, 'OK', input('post.'), 201);
     }
 }
