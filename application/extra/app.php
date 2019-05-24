@@ -8,5 +8,6 @@ return [
     'apptypes' => [
         'ios',
         'android'
-    ]
+    ],
+    'app_sign_time' => 10, // lifetime of sign
 ];

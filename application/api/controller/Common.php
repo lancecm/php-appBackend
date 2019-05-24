@@ -5,6 +5,8 @@ use app\common\lib\IAuth;
 use think\controller;
 use app\common\lib\Aes;
 use app\common\lib\Auth;
+use app\common\lib\Time;
+
 /**
  * Class Common
  * @package app\api\controller
@@ -17,6 +19,7 @@ class Common extends Controller {
 
     public function _initialize()
     {
+//        $this->testAes();
         $this->checkRequestAuth();
     }
 
@@ -27,6 +30,12 @@ class Common extends Controller {
         // 获取headers
         $headers = request()->header();
         // 基础参数校验
+
+        // 注意：
+        // 1. 除了Headers，body中传递过来的数据也可以拿来校验
+        // 2. 可以把数据打包后发给服务端验证
+        // 3. 需要加入时间戳
+
         if (empty($headers['sign'])) {
             throw new ApiException('sign不存在', 400);
         }
@@ -52,15 +61,17 @@ class Common extends Controller {
 //        echo (new Aes())->encrypt($str); exit;
 
         // 测试解密
-//        $str = "34d3225a182db2a1ec989783bda312165be30c400d22809728564fe852405933";
+//        $str = "aa2f9793e982f1a9bfaca66b7f187dd73d7d4af2eb8a7540cb2f310588b2d2ebcbdcce60b0f91ac0616884697148ff90";
 //        echo (new Aes())->decrypt($str, config('app.aeskey')); exit;
 
         // 测试应用场景
         $data = [
-            'id' => 1243,
-            'm' => 5672312
+            'did' => 1243,
+            'version' => 1,
+            'time' => Time::get13TimeStamp(),
         ];
         $str = IAuth::setSign($data);
+        echo $str.'<br/>';
         echo (new Aes())->decrypt($str); exit;
     }
 

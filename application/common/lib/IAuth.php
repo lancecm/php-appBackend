@@ -38,10 +38,15 @@ class IAuth {
         parse_str($str, $arr);
         if (!is_array($arr)
             || empty($arr['did']) || $data['did'] != $arr['did']
-            || empty($arr['app_type']) || $data['app_type'] != $arr['app_type']) {
+            || empty($arr['version']) || $data['version'] != $arr['version']
+            || empty($arr['time']) || $data['time'] != $arr['time']) {
             return false;
-        } else {
-            return true;
         }
+        // 检查时间戳是否过期
+        if (time() - ceil($arr['time']/1000) > config('app.app_sign_time')) {
+            return false;
+        }
+
+        return true;
     }
 }
