@@ -28,3 +28,5 @@ Route::delete('test/:id', 'api/test/delete');
 
 // 对应全部七种规则
 Route::resource('test', 'api/test');
+
+Route::get('api/cat', 'api/cat/read');

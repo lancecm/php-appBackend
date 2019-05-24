@@ -6,6 +6,7 @@ use think\controller;
 use app\common\lib\Aes;
 use app\common\lib\Auth;
 use app\common\lib\Time;
+use think\Cache;
 
 /**
  * Class Common
@@ -46,8 +47,15 @@ class Common extends Controller {
         if (!IAuth::checkSignPass($headers)) {
             throw new ApiException('sign不合法', 401);
         }
+
         // 存header信息
+        // 1. 静态缓存    仅适合单台服务器
+        // 2. 写入mysql
+        // 3. 写入redis
+        Cache::set($headers['sign'], 1, config('app.app_sign_cache_time'));
+
         $this->headers = $headers;
+
     }
 
     /**

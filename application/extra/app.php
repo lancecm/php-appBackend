@@ -9,5 +9,6 @@ return [
         'ios',
         'android'
     ],
-    'app_sign_time' => 10, // lifetime of sign
+    'app_sign_time' => 1000000000, // lifetime of sign
+    'app_sign_cache_time' => 2000000000, // sign 缓存失效时间
 ];

@@ -2,6 +2,8 @@
 
 namespace app\common\lib;
 
+use think\Cache;
+
 /**
  * Class IAuth
  * 权限验证
@@ -42,11 +44,14 @@ class IAuth {
             || empty($arr['time']) || $data['time'] != $arr['time']) {
             return false;
         }
-        // 检查时间戳是否过期
-        if (time() - ceil($arr['time']/1000) > config('app.app_sign_time')) {
-            return false;
+        if (!config('app_debug')) {
+            // 检查sign是否过期
+            if (time() - ceil($arr['time']/1000) > config('app.app_sign_time')) {
+                return false;
+            }
+            // 检查sign是否使用过
+            if (Cache::get($data['sign'])) return false;
         }
-
         return true;
     }
 }
