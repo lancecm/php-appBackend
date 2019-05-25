@@ -1,9 +1,12 @@
 <?php
-namespace app\api\controller;
-use think\Controller;
-use app\common\lib\exception\ApiException;
+namespace app\api\controller\v1;
+use app\api\controller\Common;
 
 class Cat extends Common {
+    /**
+     * @return array
+     * 返回栏目信息
+     */
     public function read() {
         $cats = config('column.lists');
 
@@ -18,7 +21,7 @@ class Cat extends Common {
                 'catid' => $id,
                 'catname' => $name
             ];
-        }
+        };
 
         return show(config('code.success'), 'OK', $result, 201);
     }

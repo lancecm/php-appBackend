@@ -83,4 +83,19 @@ class Common extends Controller {
         echo (new Aes())->decrypt($str); exit;
     }
 
+    /**
+     * @param array $news
+     * @return array
+     * 处理新闻数据 (capid 从id转换成对应的文字)
+     */
+    protected function dealNews($news = []) {
+        if (empty($news)) return [];
+        $cats = config('column.lists');
+        foreach ($news as $key => $new) {
+            // 注意PHP数组的用法非常灵活！
+            $news[$key]['catname'] = $cats[$new['capid']] ? $cats[$new['capid']] : '-';
+        }
+        return $news;
+    }
+
 }

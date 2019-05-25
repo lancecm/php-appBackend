@@ -29,4 +29,10 @@ Route::delete('test/:id', 'api/test/delete');
 // 对应全部七种规则
 Route::resource('test', 'api/test');
 
-Route::get('api/cat', 'api/cat/read');
+// 版本控制
+Route::get('api/:ver/cat', 'api/:ver.cat/read');
+Route::get('api/:ver/index', 'api/:ver.index/index');
+// 新闻接口
+Route::resource('api/:ver/news', 'api/:ver.news');
+// 排行接口
+Route::resource('api/:ver/rank', 'api/:ver.rank');
